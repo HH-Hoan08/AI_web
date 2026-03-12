@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff"> <!-- ngan trinh duyet doan sai loai file-->
+  <meta http-equiv="X-Frame-Options" content="DENY"> <!-- ngan web bi nhung vao <iframe> cua trang khac -->
+  <title>LUXURY MARKET — Mua sắm đẳng cấp</title>
+  <meta property="og:description" content="Nền tảng mua sắm trực tuyến cao cấp với hàng ngàn sản phẩm chính hãng">
+  <meta property="og:title" content="LUXURY MARKET">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> <!-- load font nhanh hon -->
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- SEARCH OVERLAY -->
+<div class="search-overlay" id="searchOverlay" onclick="closeSearch(event)">
+  <div class="search-big">
+    <span>🔍</span>
+    <input type="text" placeholder="Tìm kiếm sản phẩm..." id="bigSearchInput" oninput="handleSearch(this.value)">
+    <button class="search-esc" onclick="toggleSearch()">ESC</button>
+  </div>
+</div>
+
+<!-- CART SIDEBAR -->
+<div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+<div class="cart-sidebar" id="cartSidebar">
+  <div class="cart-header">
+    <h2>Giỏ hàng 🛒</h2>
+    <button class="cart-close" onclick="toggleCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <div style="text-align:center;padding:60px 0;color:var(--text-muted)">
+      <div style="font-size:4rem;margin-bottom:16px">🛒</div>
+      <p style="font-weight:600">Giỏ hàng trống</p>
+      <p style="font-size:0.85rem;margin-top:8px">Hãy thêm sản phẩm vào giỏ nhé!</p>
+    </div>
+  </div>
+  <div class="cart-footer" id="cartFooter" style="display:none">
+    <div class="cart-subtotal"><span>Tạm tính</span><span id="cartSubtotal">0₫</span></div>
+    <div class="cart-subtotal"><span>Phí vận chuyển</span><span style="color:var(--success)">Miễn phí</span></div>
+    <div class="cart-total"><span>Tổng cộng</span><span id="cartTotal">0₫</span></div>
+    <button class="checkout-btn" onclick="checkout()">Thanh toán ngay →</button>
+  </div>
+</div>
+
+<!-- PRODUCT MODAL -->
+<div class="modal-overlay" id="productModal" onclick="closeModal(event)">
+  <div class="modal" id="modalContent">
+    <button class="modal-close" onclick="closeProductModal()">✕</button>
+    <div class="modal-grid" id="modalGrid"></div>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <a href="#" class="logo">LUXURY<span class="logo-dot"></span>MARKET</a>
+  
+  <ul class="nav-links">
+    <li><a href="#home">Trang chủ</a></li>
+    <li><a href="#categories">Danh mục</a></li>
+    <li><a href="#products">Sản phẩm</a></li>
+    <li><a href="#flash-sale">Flash Sale</a></li>
+    <li><a href="#reviews">Đánh giá</a></li>
+  </ul>
+
+  <div class="nav-actions">
+    <div class="search-bar" onclick="toggleSearch()">
+      <span>🔍</span>
+      <input type="text" placeholder="Tìm kiếm..." readonly style="cursor:pointer">
+    </div>
+    <button class="btn-icon" onclick="toggleCart()" title="Giỏ hàng">
+      🛒
+      <span class="cart-badge" id="cartBadge" style="display:none">0</span>
+    </button>
+    <span class="theme-toggle" onclick="toggleTheme()" title="Dark mode" aria-label="Chuyển chế độ tối">🌙</span>
+    <div class="user-avatar" onclick="showProfile()">PHU</div>
+    <button class="login-btn" onclick="openAuthModal()">Đăng nhập</button>
+    <span id="userGreeting" class="user-greeting"></span>
+    <div class="hamburger" onclick="toggleMenu()" aria-label="Mở menu">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg">
+    <div class="hero-blob blob1"></div>
+    <div class="hero-blob blob2"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-badge">✦ Mới ra mắt 2026</div>
+    <h1>Mua sắm<br><em>đẳng cấp</em><br>mọi lúc</h1>
+    <p>Khám phá hàng ngàn sản phẩm chính hãng với giá tốt nhất. Giao hàng nhanh, đổi trả dễ dàng, thanh toán an toàn.</p>
+    <div class="hero-cta">
+      <a href="#products" class="btn-primary">Mua sắm ngay →</a>
+      <a href="#flash-sale" class="btn-secondary">Flash Sale 🔥</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><span class="stat-num">50K+</span><span class="stat-label">Sản phẩm</span></div>
+      <div class="stat"><span class="stat-num">200K+</span><span class="stat-label">Khách hàng</span></div>
+      <div class="stat"><span class="stat-num">4.9⭐</span><span class="stat-label">Đánh giá</span></div>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-card-img" style="grid-row:span 2">
+      <div style="width:100%;height:100%;background:linear-gradient(135deg,#1a1a2e,#e63946);display:flex;align-items:center;justify-content:center;font-size:4rem">👜</div>
+      <div class="img-overlay"><span class="img-tag">Túi cao cấp</span></div>
+    </div>
+    <div class="hero-card-img">
+      <div style="width:100%;height:100%;background:linear-gradient(135deg,#2d6a4f,#52b788);display:flex;align-items:center;justify-content:center;font-size:2rem">⌚</div>
+      <div class="img-overlay"><span class="img-tag">Đồng hồ</span></div>
+    </div>
+    <div class="hero-card-img">
+      <div style="width:100%;height:100%;background:linear-gradient(135deg,#f4a261,#e76f51);display:flex;align-items:center;justify-content:center;font-size:2rem">👟</div>
+      <div class="img-overlay"><span class="img-tag">Giày thể thao</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- BANNER SLIDER -->
+<section style="padding:40px 5% 0">
+  <div class="slider reveal" id="bannerSlider">
+    <div class="slides" id="slidesTrack">
+      <div class="slide">
+        <div class="slide-content">
+          <div class="slide-tag">Flash Sale cuối tuần</div>
+          <div class="slide-title">Giảm đến<br><strong style="font-size:1.4em;color:var(--accent)">70%</strong><br>Thời trang cao cấp</div>
+          <button class="slide-cta" onclick="document.getElementById('flash-sale').scrollIntoView({behavior:'smooth'})">Xem ngay ↓</button>
+        </div>
+        <div style="position:absolute;right:40px;top:50%;transform:translateY(-50%);font-size:min(15vw,120px);opacity:0.3">👗</div>
+      </div>
+      <div class="slide">
+        <div class="slide-content">
+          <div class="slide-tag">Bộ sưu tập mới</div>
+          <div class="slide-title">Đồng hồ<br><em>Luxury</em><br>Sang trọng vượt thời gian</div>
+          <button class="slide-cta" onclick="openCategory('Đồng hồ')">Khám phá →</button>
+        </div>
+        <div style="position:absolute;right:40px;top:50%;transform:translateY(-50%);font-size:min(15vw,120px);opacity:0.3">⌚</div>
+      </div>
+      <div class="slide">
+        <div class="slide-content">
+          <div class="slide-tag">Ưu đãi đặc biệt</div>
+          <div class="slide-title">Miễn phí<br>vận chuyển<br><span style="color:var(--accent2)">toàn quốc</span></div>
+          <button class="slide-cta" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">Mua ngay</button>
+        </div>
+        <div style="position:absolute;right:40px;top:50%;transform:translateY(-50%);font-size:min(15vw,120px);opacity:0.3">🚀</div>
+      </div>
+    </div>
+    <div class="slider-dots" id="sliderDots">
+      <button class="dot active" onclick="goSlide(0)"></button>
+      <button class="dot" onclick="goSlide(1)"></button>
+      <button class="dot" onclick="goSlide(2)"></button>
+    </div>
+    <button class="slider-nav slider-prev" onclick="changeSlide(-1)">‹</button>
+    <button class="slider-nav slider-next" onclick="changeSlide(1)">›</button>
+  </div>
+</section>
+
+<!-- CATEGORIES -->
+<section class="section" id="categories">
+  <div class="section-header reveal">
+    <div class="section-label">Danh mục</div>
+    <h2 class="section-title">Khám phá theo danh mục</h2>
+  </div>
+  <div class="categories-grid reveal" id="categoriesGrid"></div>
+</section>
+
+<!-- PRODUCTS -->
+<section class="section" id="products" style="background:var(--bg2)">
+  <div class="section-header reveal">
+    <div class="section-label">Sản phẩm nổi bật</div>
+    <h2 class="section-title">Bán chạy nhất tuần</h2>
+  </div>
+  <div class="filter-bar reveal" id="filterBar"></div>
+  <div class="products-grid" id="productsGrid"></div>
+</section>
+
+<!-- FLASH SALE -->
+<section class="flash-sale" id="flash-sale">
+  <div class="flash-bg"></div>
+  <div class="flash-header reveal">
+    <div>
+      <div style="font-size:0.75rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:8px">⚡ Flash Sale</div>
+      <div class="flash-title">Ưu đãi <span>sốc</span><br>giới hạn thời gian</div>
+    </div>
+    <div class="countdown">
+      <div class="count-block"><div class="count-num" id="countH">08</div><div class="count-label">Giờ</div></div>
+      <div class="count-sep">:</div>
+      <div class="count-block"><div class="count-num" id="countM">45</div><div class="count-label">Phút</div></div>
+      <div class="count-sep">:</div>
+      <div class="count-block"><div class="count-num" id="countS">30</div><div class="count-label">Giây</div></div>
+    </div>
+  </div>
+  <div class="flash-grid reveal" id="flashGrid"></div>
+</section>
+
+<!-- REVIEWS -->
+<section class="section" id="reviews">
+  <div class="section-header reveal">
+    <div class="section-label">Khách hàng nói gì</div>
+    <h2 class="section-title">Hàng ngàn review<br>5 sao từ khách hàng</h2>
+  </div>
+  <div class="reviews-grid" id="reviewsGrid"></div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand">LUXURY MARKET</div>
+      <p class="footer-desc">Nền tảng mua sắm trực tuyến cao cấp với hàng ngàn sản phẩm chính hãng. Giao hàng nhanh, đổi trả dễ dàng.</p>
+      <div style="display:flex;gap:12px;margin-top:24px;flex-wrap:wrap">
+        <div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.06);border-radius:10px;padding:10px 16px">
+          <img src="https://help.apple.com/assets/61E87DCBFC21B22E8520B01C/61E87DCCFC21B22E8520B023/en_US/5279f907b15e129c19254ca88d643cd9.png" width="24" height="24">
+          <div><div style="font-size:0.7rem;color:rgba(255,255,255,0.4)">Download on</div><div style="font-size:0.85rem;font-weight:600">App Store</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.06);border-radius:10px;padding:10px 16px">
+          <img src="https://static.vecteezy.com/system/resources/previews/022/484/501/original/google-play-store-icon-logo-symbol-free-png.png" width="24" height="24">
+          <div><div style="font-size:0.7rem;color:rgba(255,255,255,0.4)">Get it on</div><div style="font-size:0.85rem;font-weight:600">Google Play</div></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="footer-heading">Mua sắm</div>
+      <ul class="footer-links">
+        <li><a href="#">Sản phẩm mới</a></li>
+        <li><a href="#">Flash Sale</a></li>
+        <li><a href="#">Danh mục</a></li>
+        <li><a href="#">Sản phẩm nổi bật</a></li>
+        <li><a href="#">Ưu đãi hôm nay</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-heading">Hỗ trợ</div>
+      <ul class="footer-links">
+        <li><a href="#">Trung tâm trợ giúp</a></li>
+        <li><a href="#">Theo dõi đơn hàng</a></li>
+        <li><a href="#">Đổi trả hàng</a></li>
+        <li><a href="#">Liên hệ</a></li>
+        <li><a href="#">Chính sách bảo mật</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-heading">Nhận ưu đãi</div>
+      <p style="color:rgba(255,255,255,0.5);font-size:0.85rem;margin-bottom:16px">Đăng ký nhận email để nhận ưu đãi độc quyền mỗi tuần</p>
+      <div class="newsletter">
+        <input type="email" placeholder="email@example.com" id="emailInput">
+        <button onclick="subscribe()">→</button>
+      </div>
+      <p style="color:rgba(255,255,255,0.3);font-size:0.75rem;margin-top:12px">📍 123 Nguyễn Huệ, Q.1, TP.HCM<br>📞 1800 6868 | ✉ hello@luxemarket.vn</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2026 LUXURY MARKET. Thiết kế với ❤ tại Việt Nam</span>
+    <div class="social-links">
+      <a class="social-btn" href="https://www.facebook.com/huuphu.pham.773" target="_blank">f</a>
+      <a class="social-btn" href="#" target="_blank">in</a>
+      <a class="social-btn" href="https://www.instagram.com/fu_otis.3110/" target="_blank">ig</a>
+      <a class="social-btn" href="#" target="_blank">yt</a>
+      <a class="social-btn" href="https://www.tiktok.com/@phamhuuphu05" target="_blank">tk</a>
+    </div>
+  </div>
+</footer>
+
+<!-- modal dang nhap -->
+<div id="authModal" class="auth-modal">
+    <div class="auth-box">
+        <h2 id="authTitle">Đăng nhập</h2>
+
+        <input type="text" id="authUsername" placeholder="Tên đăng nhập">
+        <input type="password" id="authPassword" placeholder="Mật khẩu">
+
+        <button onclick="handleAuth()">Xác nhận</button>
+
+        <p id="switchAuth">
+            Chưa có tài khoản?
+            <span onclick="toggleAuthMode()">Đăng ký</span>
+        </p>
+
+        <span class="close-auth" onclick="closeAuthModal()">×</span>
+    </div>
+</div>
+
+<!-- modal ho so nguoi dung -->
+ <div id="profileModal" class="profile-modal">
+    <div class="profile-box">
+        <h2>Hồ sơ cá nhân</h2>
+
+        <p><strong>Tên đăng nhập:</strong> <span id="profileUsername"></span></p>
+
+        <button onclick="closeProfileModal()">Đóng</button>
+    </div>
+</div>
+<script src="script.js" defer></script>
+</body>
+</html>
