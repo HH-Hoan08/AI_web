@@ -1,4 +1,3 @@
-
 let isLoginMode = true;
 let currentUser = JSON.parse(localStorage.getItem("luxury_user")) || null;
 // data
