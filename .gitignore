@@ -1,0 +1,22 @@
+# 1. Python rác (Tự đẻ khi chạy code)
+__pycache__/
+*.py[cod]
+*$py.class
+
+# 2. Môi trường ảo (Nặng và không cần thiết)
+venv/
+env/
+.venv/
+
+# 3. Bí mật (CỰC QUAN TRỌNG - API KEY Gemini nằm đây)
+.env
+
+# 4. Docker rác
+.docker/
+
+# 5. IDE (Cấu hình riêng của VS Code hoặc PyCharm)
+.vscode/
+.idea/
+
+# 6. Database nháp (Nếu dùng SQLite)
+*.mysql
